@@ -16,7 +16,8 @@ app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, 'public/images')));
 
 // Routes
-app.use('/api/locations', locationRoutes);
+app.use('/api/locations', authMiddleware, addLocationValidator, locationRoutes);
+
 
 // Error handling middleware
 app.use(errorHandler);
