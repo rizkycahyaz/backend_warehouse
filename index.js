@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const locationRoutes = require('./routes/locationsRoutes');
+const locationRoutes = require('./routes/locationRoutes');
 const errorHandler = require('./middlewares/errorHandler');
+const { addLocationValidator } = require('./validators/locationValidator');
+const authMiddleware = require('./middlewares/authMiddleware');
 const path = require('path');
 const port = 3000;
 
