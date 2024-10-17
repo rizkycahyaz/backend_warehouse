@@ -5,6 +5,7 @@ const db = require('../config/db');
 // Secret key untuk JWT (pastikan untuk mengganti ini dengan yang aman)
 const JWT_SECRET = 'your_secret_key';
 
+// LOGIN
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
@@ -30,6 +31,24 @@ exports.login = (req, res) => {
         message: 'Login successful',
         token,
       });
+    });
+  });
+};
+
+// REGISTER
+exports.register = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Hash password sebelum menyimpan user baru
+  const saltRounds = 10;
+  await bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+    if (err) return res.status(500).json({ message: err });
+
+    const sql = 'INSERT INTO user (email, password) VALUES (?, ?)';
+    db.query(sql, [email, hashedPassword], (err, results) => {
+      if (err) return res.status(500).json({ message: 'Database error' });
+
+      res.status(201).json({ message: 'User registered successfully' });
     });
   });
 };

@@ -1,4 +1,4 @@
-const Item = require('../models/Item');
+const Item = require('../models/modelItem');
 
 // Menambahkan barang baru
 exports.createItem = (req, res) => {

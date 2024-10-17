@@ -3,6 +3,7 @@ const authRoutes = require("./routes/authRoutes");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const locationRoutes = require("./routes/locationRoutes");
+const itemRoutes = require("./routes/itemRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 const { addLocationValidator } = require("./validators/locationValidator");
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -17,12 +18,14 @@ app.use(bodyParser.json());
 app.use("/static", express.static(path.join(__dirname, "public/images")));
 
 // Routes
-app.use("/api/item", authMiddleware, addLocationValidator, locationRoutes);
+// Routes
+app.use("/api/auth", authRoutes); // Pastikan authRoutes tidak membutuhkan authMiddleware
+// Halaman utama tidak butuh middleware otentikasi
+app.use("/api/items", itemRoutes); 
+// Hanya halaman admin yang butuh middleware otentikasi
+app.use("/api/admin/items", itemRoutes); 
 app.use("/api/locations", locationRoutes);
-app.use("/api/auth", authRoutes);
 
-const itemRoutes = require("./routes/itemRoutes");
-app.use("/api/items", itemRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

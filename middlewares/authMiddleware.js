@@ -1,21 +1,18 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'your_secret_key';
 
 const authMiddleware = (req, res, next) => {
-  const token = req.headers['authorization'];
-
+  const token = req.headers['authorization']?.split(' ')[1]; // Mendapatkan token dari header Authorization
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(403).json({ message: 'No token provided' });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: 'Invalid token' });
-    }
-
-    req.userId = decoded.id_user;
+  try {
+    const decoded = jwt.verify(token, 'your_secret_key'); // Verifikasi token dengan kunci rahasia
+    req.user = decoded; // Simpan data user yang di-decode ke request
     next();
-  });
+  } catch (error) {
+    return res.status(403).json({ message: 'Invalid token' });
+  }
 };
 
 module.exports = authMiddleware;
