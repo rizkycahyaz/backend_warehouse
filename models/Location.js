@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+
 // Fungsi untuk menambahkan lokasi ke dalam database
 exports.addLocation = (warehouse_name, kolom, baris, x, y) => {
   return new Promise((resolve, reject) => {

@@ -1,9 +1,17 @@
 const db = require('../config/db');
 
 class Item {
-  static create(data, callback) {
-    const sql = 'INSERT INTO material (lot_batch_no, part_no, description, qty, unit, location_id, photo) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [data.lot_batch_no, data.part_no, data.description, data.qty, data.unit, data.location_id, data.photo], callback);
+  static create(data) {
+    return new Promise((resolve, reject) => {
+      const sql = 'INSERT INTO material (lot_batch_no, part_no, description, qty, unit, location_id) VALUES (?, ?, ?, ?, ?, ?)';
+      db.query(sql, [data.lot_batch_no, data.part_no, data.description, data.qty, data.unit, data.location_id], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 
   static findById(lot_batch_no, callback) {
@@ -28,3 +36,17 @@ class Item {
 }
 
 module.exports = Item;
+
+// Fungsi untuk menambahkan lokasi ke dalam database
+// exports.createItem = (data) => {
+//   return new Promise((resolve, reject) => {
+//     const sql = 'INSERT INTO material (lot_batch_no, part_no, description, qty, unit, location_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
+//     db.query(sql, [data.lot_batch_no, data.part_no, data.description, data.qty, data.unit, data.location_id], (err, result) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// };

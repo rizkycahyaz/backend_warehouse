@@ -6,7 +6,6 @@ const locationRoutes = require("./routes/locationRoutes");
 const itemRoutes = require("./routes/itemRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 const { addLocationValidator } = require("./validators/locationValidator");
-const authMiddleware = require("./middlewares/authMiddleware");
 const path = require("path");
 const port = 3000;
 
@@ -23,7 +22,7 @@ app.use("/api/auth", authRoutes); // Pastikan authRoutes tidak membutuhkan authM
 // Halaman utama tidak butuh middleware otentikasi
 app.use("/api/items", itemRoutes); 
 // Hanya halaman admin yang butuh middleware otentikasi
-app.use("/api/admin/items", itemRoutes); 
+app.use("/api/admin/items", itemRoutes);
 app.use("/api/locations", locationRoutes);
 
 

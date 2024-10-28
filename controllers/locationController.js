@@ -1,6 +1,28 @@
 const Location = require('../models/Location');
 const calculateCoordinates = require('../utils/calculateCoordinates');
 
+// Fungsi untuk mengambil semua lokasi dari database
+exports.getAllLocations = async (req, res) => {
+  try {
+    const locations = await Location.findLocation(); // Pastikan `Location` adalah model yang valid
+    res.json(locations);
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+// exports.getLocations = (req, res) => {
+//   const sql = 'SELECT * FROM locations';
+//   db.query(sql, (err, results) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Error fetching locations' });
+//     }
+//     res.json(results); // Mengembalikan semua lokasi
+//   });
+// };
+
+
 exports.addLocation = async (req, res) => {
     try {
       const { code } = req.body;

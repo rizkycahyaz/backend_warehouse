@@ -7,6 +7,8 @@ const { addLocationValidator } = require('../validators/locationValidator');
 router.post('/add', authMiddleware, addLocationValidator, locationController.addLocation);
 router.post('/add', locationController.addLocation);
 
+router.get('/', locationController.getAllLocations);
+
 // Cari lokasi
 router.post('/search', locationController.searchLocation);
 
