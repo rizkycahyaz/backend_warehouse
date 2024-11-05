@@ -25,6 +25,8 @@ app.use("/api/items", itemRoutes);
 app.use("/api/admin/items", itemRoutes);
 app.use("/api/locations", locationRoutes);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Error handling middleware
 app.use(errorHandler);

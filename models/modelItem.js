@@ -3,12 +3,25 @@ const db = require('../config/db');
 class Item {
   static create(data) {
     return new Promise((resolve, reject) => {
-      const sql = 'INSERT INTO material (lot_batch_no, part_no, description, qty, unit, location_id) VALUES (?, ?, ?, ?, ?, ?)';
-      db.query(sql, [data.lot_batch_no, data.part_no, data.description, data.qty, data.unit, data.location_id], (err, result) => {
+      const sql = 'INSERT INTO material (lot_batch_no, part_no, description, qty, unit, location_id, photo) VALUES (?, ?, ?, ?, ?, ?, ?)';
+      db.query(sql, [data.lot_batch_no, data.part_no, data.description, data.qty, data.unit, data.location_id, data.photo], (err, result) => {
         if (err) {
           reject(err);
         } else {
           resolve(result);
+        }
+      });
+    });
+  }
+
+  static findAll() {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM material';
+      db.query(sql, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
         }
       });
     });
@@ -19,10 +32,6 @@ class Item {
     db.query(sql, [lot_batch_no], callback);
   }
 
-  static findAll(callback) {
-    const sql = 'SELECT * FROM material';
-    db.query(sql, callback);
-  }
 
   static updateById(lot_batch_no, data, callback) {
     const sql = 'UPDATE material SET part_no = ?, description = ?, qty = ?, unit = ?, location_id = ?, photo = ? WHERE lot_batch_no = ?';
