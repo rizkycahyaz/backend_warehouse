@@ -45,17 +45,3 @@ class Item {
 }
 
 module.exports = Item;
-
-// Fungsi untuk menambahkan lokasi ke dalam database
-// exports.createItem = (data) => {
-//   return new Promise((resolve, reject) => {
-//     const sql = 'INSERT INTO material (lot_batch_no, part_no, description, qty, unit, location_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
-//     db.query(sql, [data.lot_batch_no, data.part_no, data.description, data.qty, data.unit, data.location_id], (err, result) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         resolve(result);
-//       }
-//     });
-//   });
-// };

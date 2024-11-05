@@ -28,7 +28,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/locations', locationRoutes);
 
-app.use('/api/items/search', itemRoutes);
+app.use('/api/locations/search', itemRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

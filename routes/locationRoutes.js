@@ -9,6 +9,6 @@ router.post('/add', locationController.addLocation);
 
 router.get('/', locationController.getAllLocations);
 // Cari lokasi
-router.post('/search', locationController.searchLocation);
+router.post('/search', locationController.findLocationByLotBatchNo);
 
 module.exports = router;

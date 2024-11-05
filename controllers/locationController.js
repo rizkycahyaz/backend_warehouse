@@ -1,4 +1,5 @@
 const Location = require('../models/Location');
+const cari = require('../models/modelcari');
 const calculateCoordinates = require('../utils/calculateCoordinates');
 
 // Fungsi untuk mengambil semua lokasi dari database
@@ -62,3 +63,19 @@ exports.addLocation = async (req, res) => {
       res.status(400).json({ status: false, message: error.message });
     }
   };
+
+  // Controller method to handle finding location by lot_batch_no
+exports.findLocationByLotBatchNo = async (req, res) => {
+  const { lot_batch_no } = req.body;
+
+  try {
+    const locationData = await cari.findLocationByLotBatchNo(lot_batch_no);
+    res.status(200).json({ status: true, data: locationData });
+  } catch (error) {
+    if (error.message === 'Item not found') {
+      res.status(404).json({ status: false, message: 'Item not found' });
+    } else {
+      res.status(500).json({ status: false, message: 'Error fetching item location' });
+    }
+  }
+};
