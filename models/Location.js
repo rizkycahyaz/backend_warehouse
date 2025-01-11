@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-
 // Fungsi untuk menambahkan lokasi ke dalam database
 exports.addLocation = (warehouse_name, kolom, baris, x, y) => {
   return new Promise((resolve, reject) => {
@@ -24,6 +23,20 @@ exports.findLocation = (warehouse_name, kolom, baris) => {
         reject(err);
       } else {
         resolve(result);
+      }
+    });
+  });
+};
+
+// Fungsi untuk mengambil semua lokasi dari database
+exports.getLocations = () => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM locations'; // Query untuk mengambil semua data
+    db.query(sql, (err, results) => {
+      if (err) {
+        reject(err); // Jika terjadi error
+      } else {
+        resolve(results); // Mengembalikan hasil query
       }
     });
   });

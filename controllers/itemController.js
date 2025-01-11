@@ -26,38 +26,50 @@ const fileFilter = (req, file, cb) => {
 // Inisialisasi multer
 const upload = multer({ storage, fileFilter }).single('photo'); // Hanya satu file foto yang diterima
 
-// Menambahkan item baru
 exports.addItem = async (req, res) => {
   const { lotBatchNo, partNo, description, qty, unit, locationId } = req.body;
   const photo = req.file ? req.file.filename : null;
 
   try {
-    // Memvalidasi format locationId
-    const code = locationId.match(/.{1,2}/g);
-    if (!code || code.length !== 3) {
-      return res.status(400).json({ error: 'Invalid location code format' });
+    // Validasi input utama
+    if (!lotBatchNo || !partNo || !qty || !unit || !locationId) {
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Memeriksa apakah lokasi ada di database
-    const locations = await Location.findLocation(code[0], code[1], code[2]);
-    if (!locations.length) {
+    // Validasi format locationId (contoh: "1A02B")
+    const locationRegex = /^[A-Za-z0-9]{1,2}[0-9]{2}[A-Za-z]$/;
+    if (!locationRegex.test(locationId)) {
+      return res.status(400).json({ error: `Invalid location code format: ${locationId}` });
+    }
+
+    // Memecah locationId menjadi bagian-bagian
+    const code = locationId.match(/.{1,2}/g);
+    if (!code || code.length !== 3) {
+      return res.status(400).json({ error: 'Invalid location code format 2' });
+    }
+
+    // Periksa apakah lokasi ada di database
+    const [warehouseName, row, column] = code;
+    const location = await Location.findLocation(warehouseName, row, column);
+    if (!location || !location.length) {
       return res.status(404).json({ error: 'Location not found' });
     }
 
-    // Menyimpan item ke database
-    const item = await Item.create({
+    // Simpan item ke database
+    const newItem = await Item.create({
       lot_batch_no: lotBatchNo,
       part_no: partNo,
       description,
       qty,
       unit,
-      location_id: locations[0].location_id,
+      location_id: location[0].location_id,
       photo,
     });
 
-    res.status(201).json({ message: 'Item added successfully', data: item });
+    res.status(201).json({ message: 'Item added successfully', data: newItem });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error adding item:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

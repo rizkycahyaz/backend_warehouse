@@ -8,6 +8,8 @@ const { addLocationValidator } = require('../validators/locationValidator');
 router.post('/add', locationController.addLocation);
 
 router.get('/', locationController.getAllLocations);
+router.get('/all', locationController.getLocations);
+
 // Cari lokasi
 router.post('/search', locationController.findLocationByLotBatchNo);
 
