@@ -27,14 +27,63 @@ Lingkungan: Node.js
 
 [git clone https://github.com/rizkycahyaz/backend_warehouse.git](https://github.com/rizkycahyaz/backend_warehouse.git)
 
-bash
-Copy code
 cd backend_warehouse
 
 ### Jalankan aplikasi:
 
 nodemon npm start
 Server akan berjalan di http://localhost:3000.
+
+## Dokumentasi API
+
+### Authentication API
+
+- Login
+  URL: /api/auth/login
+  Method: POST
+  Deskripsi: Authentikasi dan generate token.
+- Register
+  URL: /api/auth/register
+  Method: POST
+  Description: Register user baru.
+
+### Item API
+
+- Create Item
+  URL: /api/items/create
+  Method: POST
+  Description: menambah item.
+- Get All Items
+  URL: /api/items
+  Method: GET
+  Description: memanggil semua item.
+- Get Item Details
+  URL: /api/items/detail/:lot_batch_no
+  Method: GET
+  Description: Mengambil detail item tertentu berdasarkan lot_batch_no nya.
+- Update Item
+  URL: /api/items/:lot_batch_no
+  Method: PUT
+  Description: Update item.
+- Delete Item
+  URL: /api/items/delete/:lot_batch_no
+  Method: DELETE
+  Description: Delete item berdasarkan lot_batch_no.
+
+### Location API
+
+- Add Location
+  URL: /api/locations/add
+  Method: POST
+  Description: Menambah lokasi.
+- Get All Locations
+  URL: /api/locations
+  Method: GET
+  Description: mengambil semua lokasi.
+- Search Location by Lot/Batch Number
+  URL: /api/locations/search
+  Method: POST
+  Description: Mencari lokasi berdasarkan lot_batch_no.
 
 ### Catatan
 
