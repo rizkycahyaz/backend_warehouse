@@ -36,33 +36,6 @@ cd backend_warehouse
 nodemon npm start
 Server akan berjalan di http://localhost:3000.
 
-### Dokumentasi API
-
-Gunakan alat seperti Postman untuk mengakses endpoint berikut:
-
-Endpoint Utama
-Login Admin
-
-POST /api/auth/login
-Body: { "username": "admin", "password": "admin" }
-Response: { "token": "<JWT>" }
-Pencarian Barang
-
-GET /api/materials/search?lot_batch=<nomor_batch>
-Response: { "data": { "nama": "...", "lokasi": "...", ... } }
-CRUD Barang
-
-Tambah: POST /api/materials
-Edit: PUT /api/materials/:id
-Hapus: DELETE /api/materials/:id
-Pengelolaan Lokasi
-
-Tambah Lokasi: POST /api/locations
-Detail Lokasi: GET /api/locations/:id
-Koneksi dengan Frontend
-Pastikan URL backend diatur pada file .env frontend:
-REACT_APP_BACKEND_URL=http://localhost:3000
-
 ### Catatan
 
 Pastikan server backend berjalan sebelum mengakses aplikasi frontend.
