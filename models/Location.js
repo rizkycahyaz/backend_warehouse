@@ -29,7 +29,7 @@ exports.findLocation = (warehouse_name, kolom, baris) => {
 };
 
 // Fungsi untuk mengambil semua lokasi dari database
-exports.getLocations = () => {
+exports.findAll = () => {
   return new Promise((resolve, reject) => {
     const sql = 'SELECT * FROM locations'; // Query untuk mengambil semua data
     db.query(sql, (err, results) => {

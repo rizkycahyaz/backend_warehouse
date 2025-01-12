@@ -99,29 +99,66 @@ exports.getItemById = async (req, res) => {
   const { lot_batch_no } = req.params;
 
   try {
-    const item = Item.findById(lot_batch_no);
+    const item = await Item.findById(lot_batch_no);
     if (!item) {
       return res.status(404).json({ message: 'Item not found' });
     }
     res.status(200).json({ data: item });
   } catch (error) {
+    console.error('Error fetching item:', error.message);
     res.status(500).json({ message: 'Error fetching item', error: error.message });
   }
 };
 
 // Memperbarui item berdasarkan ID
-exports.updateItem = async (req, res) => {
+exports.updateItem = (req, res) => {
   const { lot_batch_no } = req.params;
 
-  try {
-    const updatedItem = await Item.updateById(lot_batch_no, req.body);
-    if (!updatedItem) {
-      return res.status(404).json({ message: 'Item not found' });
+  // Gunakan multer untuk menangani file upload
+  upload(req, res, async (err) => {
+    if (err) {
+      console.error('Error uploading file:', err.message || err);
+      return res.status(400).json({ message: 'File upload failed', error: err.message });
     }
-    res.status(200).json({ message: 'Item updated successfully', data: updatedItem });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating item', error: error.message });
-  }
+
+    try {
+      const { part_no, description, qty, unit, location_id } = req.body;
+      const newPhoto = req.file ? req.file.filename : null; // Foto baru, jika ada
+
+      // Ambil item lama dari database
+      const item = await Item.findById(lot_batch_no);
+      if (!item) {
+        return res.status(404).json({ message: 'Item not found' });
+      }
+
+      // Jika foto baru diunggah, hapus foto lama (opsional)
+      if (newPhoto && item.photo) {
+        const fs = require('fs');
+        const oldPhotoPath = path.join(__dirname, '../uploads', item.photo);
+        if (fs.existsSync(oldPhotoPath)) {
+          fs.unlinkSync(oldPhotoPath); // Hapus file lama
+        }
+      }
+
+      // Perbarui data item dengan foto baru (atau tetap gunakan foto lama)
+      const updatedItem = await Item.updateById(lot_batch_no, {
+        part_no,
+        description,
+        qty,
+        unit,
+        location_id,
+        photo: newPhoto || item.photo, // Gunakan foto baru atau tetap foto lama
+      });
+
+      res.status(200).json({
+        message: 'Item updated successfully',
+        data: updatedItem,
+      });
+    } catch (error) {
+      console.error('Error updating item:', error.message);
+      res.status(500).json({ message: 'Error updating item', error: error.message });
+    }
+  });
 };
 
 // Menghapus item berdasarkan ID
@@ -162,6 +199,7 @@ exports.getMaterial = (req, res) => {
       return res.status(500).json({ status: false, message: 'Database query error' });
     }
 
+    console.log('Query results:', results); // Tambahkan log ini
     if (results.length === 0) {
       return res.status(404).json({ status: false, message: 'Item not found' });
     }

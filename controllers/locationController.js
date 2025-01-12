@@ -15,7 +15,7 @@ exports.getAllLocations = async (req, res) => {
 
 exports.getLocations = async (req, res) => {
   try {
-    const locations = await Location.getLocations(); // Panggil fungsi dari model
+    const locations = await Location.findAll(); // Panggil fungsi dari model
     res.status(200).json({ status: true, data: locations }); // Mengembalikan data lokasi
   } catch (error) {
     console.error('Error fetching locations:', error);
